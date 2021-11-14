@@ -28,8 +28,8 @@ defmodule ChatWeb.MyRoomLive do
   @impl true
   def handle_event("form_update", %{"chat" => %{"message" => message}}, socket) do
       Logger.info("Typed: #{message}")
-      #{:noreply, assign(socket, message: message)}
-      {:noreply, socket}
+      {:noreply, assign(socket, message: message)}
+      #{:noreply, socket}
   end
 
   @impl true
