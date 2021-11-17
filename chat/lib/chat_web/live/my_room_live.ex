@@ -6,8 +6,12 @@ defmodule ChatWeb.MyRoomLive do
   def mount(%{"id" => room_id}, _session, socket) do
     topic = "room:" <> room_id
     username = MnemonicSlugs.generate_slug()
-    ChatWeb.Endpoint.subscribe(topic)
-    ChatWeb.Presence.track(self(), topic, username, %{})
+    if connected?(socket) do
+      ChatWeb.Endpoint.subscribe(topic)
+      ChatWeb.Presence.track(self(), topic, username, %{})
+      Logger.info("Mount of #{username}")
+    end
+    Logger.info("Mount2 of #{username}")
     {:ok, assign(
       socket,
       room_id: room_id,
