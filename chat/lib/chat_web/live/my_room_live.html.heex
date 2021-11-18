@@ -8,8 +8,9 @@
 
     <div id="user-list">
         <h3>Users Online</h3>
-        <p>user 1</p>
-        <p>user 2</p>
+        <%= for user <- @user_list do%>
+            <p> <%= user %> </p>
+        <% end %>
     </div>
 
  

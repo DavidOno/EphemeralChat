@@ -17,6 +17,7 @@ defmodule ChatWeb.MyRoomLive do
       room_id: room_id,
       topic: topic,
       username: username,
+      user_list: [],
       message: "",
       messages: [%{uuid: UUID.uuid4(), content: "#{username} joined the chat", username: "system"}],
       temporary_assigns: [messages: []])}
@@ -46,7 +47,10 @@ defmodule ChatWeb.MyRoomLive do
   def handle_info(%{event: "presence_diff", payload: %{joins: joins, leaves: leaves}}, socket) do
     join_messages = joins |> Map.keys() |> Enum.map(fn username -> %{uuid: UUID.uuid4(), content: "#{username} joined", username: "system"} end)
     leave_messages = leaves |> Map.keys() |> Enum.map(fn username -> %{uuid: UUID.uuid4(), content: "#{username} left", username: "system"} end)
-    {:noreply, assign(socket, messages: join_messages ++ leave_messages)}
+
+    user_list = ChatWeb.Presence.list(socket.assigns.topic) |> Map.keys()
+
+    {:noreply, assign(socket, messages: join_messages ++ leave_messages, user_list: user_list)}
   end
 
 end
